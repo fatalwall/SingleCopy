@@ -59,7 +59,7 @@ namespace SingleCopy
             grdFiles.Columns["LastWriteTimeUtc"].HeaderText = "Last Write Time UTC";
             grdFiles.Columns["LastWriteTimeUtc"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
-            //
+            //Set Visable Columns based on Options
             foreach (ToolStripMenuItem item in columnsToolStripMenuItem.DropDownItems)
             {
                 foreach (DataGridViewColumn column in grdFiles.Columns)
@@ -95,6 +95,7 @@ namespace SingleCopy
         {
             grdFiles.DataSource = Program.Table;
             DataGridView_UpdateColumns();
+            grdFiles.Sort(grdFiles.Columns["md5sum"], ListSortDirection.Ascending);
             toolStripStatus.Text = string.Format("{0:n0} Files scanned", Program.files.Count());
             toolStripStatusBar.Visible = false;
             toolStripScan.Enabled = true;
@@ -203,6 +204,29 @@ namespace SingleCopy
                 }
             }
 
+        }
+
+
+
+        private void grdFiles_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Delete)
+            {
+                foreach (DataGridViewRow r in grdFiles.SelectedRows)
+                {
+                    if (!(deleteConfirmationToolStripMenuItem.Checked && MessageBox.Show(String.Format("Are you sure you want to delete '{0}'?", grdFiles.Rows[r.Index].Cells["FullName"].Value.ToString()), "Delete Confirmation", MessageBoxButtons.YesNo) == DialogResult.No))
+                    {
+                        File.Delete(grdFiles.Rows[r.Index].Cells["FullName"].Value.ToString());
+                        grdFiles.Rows.RemoveAt(r.Index);
+                    }
+                }
+            }
+
+        }
+
+        private void deleteConfirmationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ((ToolStripMenuItem)sender).Checked = !((ToolStripMenuItem)sender).Checked;
         }
     }
 }

@@ -62,6 +62,7 @@
             this.viewBox_Picture = new System.Windows.Forms.PictureBox();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.toolStripToggleViewer = new System.Windows.Forms.ToolStripButton();
+            this.deleteConfirmationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -131,7 +132,8 @@
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.columnsToolStripMenuItem});
+            this.columnsToolStripMenuItem,
+            this.deleteConfirmationToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
             this.optionsToolStripMenuItem.Text = "&Options";
@@ -324,12 +326,15 @@
             this.grdFiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grdFiles.Location = new System.Drawing.Point(0, 0);
             this.grdFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.grdFiles.MultiSelect = false;
             this.grdFiles.Name = "grdFiles";
             this.grdFiles.ReadOnly = true;
             this.grdFiles.RowTemplate.Height = 24;
+            this.grdFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdFiles.Size = new System.Drawing.Size(800, 373);
             this.grdFiles.TabIndex = 0;
             this.grdFiles.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdFiles_RowEnter);
+            this.grdFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.grdFiles_KeyDown);
             // 
             // splitContainer
             // 
@@ -387,6 +392,15 @@
             this.toolStripToggleViewer.Text = "Toggle File Viewer";
             this.toolStripToggleViewer.Click += new System.EventHandler(this.toolStripToggleViewer_Click);
             // 
+            // deleteConfirmationToolStripMenuItem
+            // 
+            this.deleteConfirmationToolStripMenuItem.Checked = true;
+            this.deleteConfirmationToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.deleteConfirmationToolStripMenuItem.Name = "deleteConfirmationToolStripMenuItem";
+            this.deleteConfirmationToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.deleteConfirmationToolStripMenuItem.Text = "Delete Confirmation";
+            this.deleteConfirmationToolStripMenuItem.Click += new System.EventHandler(this.deleteConfirmationToolStripMenuItem_Click);
+            // 
             // frmMaster
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -399,7 +413,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "frmMaster";
-            this.Text = "Form1";
+            this.Text = "Single Copy";
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -451,6 +465,7 @@
         private System.Windows.Forms.RichTextBox viewBox_Text;
         private System.Windows.Forms.ToolStripProgressBar toolStripStatusBar;
         private System.Windows.Forms.ToolStripButton toolStripToggleViewer;
+        private System.Windows.Forms.ToolStripMenuItem deleteConfirmationToolStripMenuItem;
     }
 }
 
