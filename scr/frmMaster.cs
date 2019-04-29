@@ -1,10 +1,17 @@
-﻿using System;
+﻿/* 
+ *Copyright (C) 2019 Peter Varney - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the MIT license, 
+ *
+ * You should have received a copy of the MIT license with
+ * this file. If not, visit : https://github.com/fatalwall/SingleCopy
+ */
+ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.IO;
 using System.Windows.Forms;
 using vshed.IO;
-using System.Diagnostics;
 
 namespace SingleCopy
 {
@@ -77,7 +84,7 @@ namespace SingleCopy
 
         private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Program.getFiles(@"C:\Users\pvarney.VSHED\Desktop", new string[] { @"C:\Users\Default", @"C:\Users\All Users\Microsoft", @"C:\ProgramData\Microsoft", @"C:\Windows", @"C:\Program Files (x86)", @"C:\Program File" });
+            Program.getFiles(@"C:\", new string[] { @"C:\Users\Default", @"C:\Users\All Users\Microsoft", @"C:\ProgramData\Microsoft", @"C:\Windows", @"C:\Program Files (x86)", @"C:\Program File" });
             bgWorker.ReportProgress(-1);
             Program.Table = Program.files.ToDataTable();
         }
