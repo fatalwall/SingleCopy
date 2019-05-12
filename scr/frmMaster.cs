@@ -6,12 +6,17 @@
  * You should have received a copy of the MIT license with
  * this file. If not, visit : https://github.com/fatalwall/SingleCopy
  */
- using System;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.IO;
 using System.Windows.Forms;
 using vshed.IO;
+using OutlookStyleControls;
+using System.Collections;
+using System.Data;
+using NPOI.XSSF.UserModel;
+using NPOI.SS.UserModel;
 
 namespace SingleCopy
 {
@@ -35,44 +40,55 @@ namespace SingleCopy
 
         private void toolStripScan_Click(object sender, EventArgs e)
         {
-            toolStripStatus.Text = "Scanning Files";
-            toolStripScan.Enabled = false;
-            bgWorker.RunWorkerAsync();
+            FolderBrowserDialog dir = new FolderBrowserDialog() { ShowNewFolderButton = false, RootFolder = Environment.SpecialFolder.MyComputer };
+
+            if (dir.ShowDialog() == DialogResult.OK)
+            {
+                toolStripStatus.Text = "Scanning Files";
+                toolStripSpreadsheet.Enabled = false;
+                toolStripScan.Enabled = false;
+                bgWorker.RunWorkerAsync(dir.SelectedPath);
+            }
         }
 
         private void DataGridView_UpdateColumns()
         {
-            //Always hide
-            grdFiles.Columns["DirectoryName"].Visible = false;
-            grdFiles.Columns["Exists"].Visible = false;
-
-            //Friendly Headers
-            grdFiles.Columns["Length"].HeaderText = "Size (Bytes)";
-            grdFiles.Columns["Length"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            grdFiles.Columns["md5sum"].HeaderText = "MD5";
-            grdFiles.Columns["md5sum"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            grdFiles.Columns["IsReadOnly"].HeaderText = "Is Read Only";
-            grdFiles.Columns["FullName"].HeaderText = "Full Name";
-            grdFiles.Columns["CreationTime"].HeaderText = "Creation Time";
-            grdFiles.Columns["CreationTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            grdFiles.Columns["CreationTimeUtc"].HeaderText = "Creation Time UTC";
-            grdFiles.Columns["CreationTimeUtc"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            grdFiles.Columns["LastAccessTime"].HeaderText = "Last Access Time";
-            grdFiles.Columns["LastAccessTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            grdFiles.Columns["LastAccessTimeUtc"].HeaderText = "Last Access Time UTC";
-            grdFiles.Columns["LastAccessTimeUtc"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            grdFiles.Columns["LastWriteTime"].HeaderText = "Last Write Time";
-            grdFiles.Columns["LastWriteTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            grdFiles.Columns["LastWriteTimeUtc"].HeaderText = "Last Write Time UTC";
-            grdFiles.Columns["LastWriteTimeUtc"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-            //Set Visable Columns based on Options
-            foreach (ToolStripMenuItem item in columnsToolStripMenuItem.DropDownItems)
+            if (grdFiles.Columns.Count > 0)
             {
-                foreach (DataGridViewColumn column in grdFiles.Columns)
+                //Always hide
+                grdFiles.Columns["DirectoryName"].Visible = false;
+                grdFiles.Columns["Exists"].Visible = false;
+
+                //Friendly Headers
+                grdFiles.Columns["Length"].HeaderText = "Size (Bytes)";
+                grdFiles.Columns["Length"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                grdFiles.Columns["md5sum"].HeaderText = "MD5";
+                grdFiles.Columns["md5sum"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                grdFiles.Columns["IsReadOnly"].HeaderText = "Is Read Only";
+                grdFiles.Columns["FullName"].HeaderText = "Full Name";
+                grdFiles.Columns["CreationTime"].HeaderText = "Creation Time";
+                grdFiles.Columns["CreationTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                grdFiles.Columns["CreationTimeUtc"].HeaderText = "Creation Time UTC";
+                grdFiles.Columns["CreationTimeUtc"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                grdFiles.Columns["LastAccessTime"].HeaderText = "Last Access Time";
+                grdFiles.Columns["LastAccessTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                grdFiles.Columns["LastAccessTimeUtc"].HeaderText = "Last Access Time UTC";
+                grdFiles.Columns["LastAccessTimeUtc"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                grdFiles.Columns["LastWriteTime"].HeaderText = "Last Write Time";
+                grdFiles.Columns["LastWriteTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                grdFiles.Columns["LastWriteTimeUtc"].HeaderText = "Last Write Time UTC";
+                grdFiles.Columns["LastWriteTimeUtc"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+                //Set Visable Columns based on Options
+                foreach (ToolStripMenuItem item in columnsToolStripMenuItem.DropDownItems)
                 {
-                    if (item.Text == column.HeaderText) column.Visible = item.Checked;
+                    foreach (DataGridViewColumn column in grdFiles.Columns)
+                    {
+                        if (item.Text == column.HeaderText) column.Visible = item.Checked;
+                    }
                 }
+                grdFiles.GroupTemplate.Column = grdFiles.Columns["md5sum"];
+                grdFiles.Sort(new DataRowComparer(grdFiles.Columns["md5sum"].Index, ListSortDirection.Ascending));
             }
         }
 
@@ -84,9 +100,10 @@ namespace SingleCopy
 
         private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Program.getFiles(@"C:\", new string[] { @"C:\Users\Default", @"C:\Users\All Users\Microsoft", @"C:\ProgramData\Microsoft", @"C:\Windows", @"C:\Program Files (x86)", @"C:\Program File" });
-            bgWorker.ReportProgress(-1);
-            Program.Table = Program.files.ToDataTable();
+            Program.DS.Tables.Clear();
+            Program.getFiles((string)e.Argument, (from Config.ExcludeElement ee in Config.Folders.getCurrentInstance().Excludes select ee.Folder).ToArray<string>());
+            bgWorker.ReportProgress(-1);   
+            Program.DS.Tables.Add(Program.files.ToDataTable());
         }
         private void bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -100,12 +117,12 @@ namespace SingleCopy
 
         private void bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            grdFiles.DataSource = Program.Table;
+            grdFiles.BindData(Program.DS, "Files");
             DataGridView_UpdateColumns();
-            grdFiles.Sort(grdFiles.Columns["md5sum"], ListSortDirection.Ascending);
             toolStripStatus.Text = string.Format("{0:n0} Files scanned", Program.files.Count());
             toolStripStatusBar.Visible = false;
             toolStripScan.Enabled = true;
+            toolStripSpreadsheet.Enabled = true;
             Program.files.Clear();
         }
 
@@ -116,16 +133,18 @@ namespace SingleCopy
 
         private void toolStripToggleViewer_Click(object sender, EventArgs e)
         {
+            //Toggle the preview panel open or closed
             splitContainer.Panel2Collapsed = !splitContainer.Panel2Collapsed;
-            if(!splitContainer.Panel2Collapsed)
-            {
-                foreach(DataGridViewRow r in grdFiles.SelectedRows) { ViewFile(r.Index); }
-            }
+            //change button display and tool tip
+            if (splitContainer.Panel2Collapsed) { toolStripToggleViewer.Image = Properties.Resources.preview_expand; toolStripToggleViewer.Text = "Show Preview Panel"; }
+            else { toolStripToggleViewer.Image = Properties.Resources.preview_collapse; toolStripToggleViewer.Text = "Show Preview Panel"; }
+            //If panel is showing set whats displayed
+            if (!splitContainer.Panel2Collapsed) { foreach(DataGridViewRow r in grdFiles.SelectedRows) { ViewFile(r.Index); } }
         }
 
         private void ViewFile(int RowIndex)
         {
-            if (RowIndex >= 0 && !splitContainer.Panel2Collapsed)
+            if (RowIndex >= 0 && !splitContainer.Panel2Collapsed && ((OutlookGridRow)grdFiles.Rows[RowIndex]).IsGroupRow == false)
             {
                 switch (grdFiles.Rows[RowIndex].Cells["Extension"].Value.ToString().ToUpper())
                 {
@@ -206,14 +225,12 @@ namespace SingleCopy
                         viewBox_Picture.Image = null;
                         viewBox_Picture.Visible = false;
                         viewBox_Text.Visible = true;
-                        viewBox_Text.Text = File.ReadAllText(grdFiles.Rows[RowIndex].Cells["FullName"].Value.ToString());
+                        try { viewBox_Text.Text = File.ReadAllText(grdFiles.Rows[RowIndex].Cells["FullName"].Value.ToString()); } catch { }
                         break;
                 }
             }
 
         }
-
-
 
         private void grdFiles_KeyDown(object sender, KeyEventArgs e)
         {
@@ -221,10 +238,14 @@ namespace SingleCopy
             {
                 foreach (DataGridViewRow r in grdFiles.SelectedRows)
                 {
-                    if (!(deleteConfirmationToolStripMenuItem.Checked && MessageBox.Show(String.Format("Are you sure you want to delete '{0}'?", grdFiles.Rows[r.Index].Cells["FullName"].Value.ToString()), "Delete Confirmation", MessageBoxButtons.YesNo) == DialogResult.No))
+                    if (((OutlookGridRow)grdFiles.Rows[r.Index]).IsGroupRow == false)
                     {
-                        File.Delete(grdFiles.Rows[r.Index].Cells["FullName"].Value.ToString());
-                        grdFiles.Rows.RemoveAt(r.Index);
+                        if (!(deleteConfirmationToolStripMenuItem.Checked && MessageBox.Show(String.Format("Are you sure you want to delete '{0}'?", grdFiles.Rows[r.Index].Cells["FullName"].Value.ToString()), "Delete Confirmation", MessageBoxButtons.YesNo) == DialogResult.No))
+                        {
+                            try { File.Delete(grdFiles.Rows[r.Index].Cells["FullName"].Value.ToString()); }
+                            catch (IOException) { }
+                            finally { grdFiles.Rows.RemoveAt(r.Index); }
+                        }
                     }
                 }
             }
@@ -234,6 +255,78 @@ namespace SingleCopy
         private void deleteConfirmationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ((ToolStripMenuItem)sender).Checked = !((ToolStripMenuItem)sender).Checked;
+        }
+
+        public class DataRowComparer : IComparer
+        {
+            ListSortDirection direction;
+            int columnIndex;
+
+            public DataRowComparer(int columnIndex, ListSortDirection direction)
+            {
+                this.columnIndex = columnIndex;
+                this.direction = direction;
+            }
+
+            #region IComparer Members
+
+            public int Compare(object x, object y)
+            {
+                DataRow obj1 = (DataRow)x;
+                DataRow obj2 = (DataRow)y;
+                return string.Compare(obj1[columnIndex].ToString(), obj2[columnIndex].ToString()) * (direction == ListSortDirection.Ascending ? 1 : -1);
+            }
+            #endregion
+        }
+
+        private void toolStripSpreadsheet_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog() { FileName="SingleCopy Export", Filter = "Excel Spreadsheet (*.xlsx)|*.xlsx" };
+            if (saveFile.ShowDialog(this) == DialogResult.OK)
+            {
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet sheet = workbook.CreateSheet("SingleCopy Export");
+
+                IRow sheetRow = sheet.CreateRow(0);
+                //Output Column Headers
+                foreach (DataGridViewColumn col in grdFiles.Columns)
+                {
+                    if (col.Visible)
+                    {
+                        ICell cell = sheetRow.CreateCell(sheetRow.LastCellNum >= 0 ? sheetRow.LastCellNum : 0);
+                        cell.SetCellValue(col.HeaderText);
+                    }
+                }
+                int LastCellNum = sheetRow.LastCellNum - 1;
+
+                //Output Table Content
+                foreach (OutlookGridRow row in grdFiles.Rows)
+                {
+                    if (!row.IsGroupRow)
+                    {
+                        sheetRow = sheet.CreateRow(sheet.LastRowNum + 1);
+
+                        foreach (DataGridViewCell col in row.Cells)
+                        {
+                            if (col.Visible)
+                            {
+                                ICell cell = sheetRow.CreateCell(sheetRow.LastCellNum >= 0 ? sheetRow.LastCellNum : 0);
+                                cell.SetCellValue(col.Value?.ToString() ?? "");
+                            }
+                        }
+                    }
+                }
+
+                //Formating
+                sheet.SetAutoFilter(new NPOI.SS.Util.CellRangeAddress(0, sheet.LastRowNum, 0, LastCellNum));
+
+                //Save
+                using (FileStream s = new FileStream(saveFile.FileName, FileMode.Create))
+                {
+                    workbook.Write(s);
+                    s.Close();
+                }
+            }
         }
     }
 }

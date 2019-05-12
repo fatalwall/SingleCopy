@@ -328,3 +328,5 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/scr/Installer Package/Dependencies/.Net 4.7 Framework
+/scr/Installer Package/GetAssemblyValue.exe

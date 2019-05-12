@@ -40,7 +40,7 @@ namespace SingleCopy
         {
             get
             {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                return Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
             }
         }
 

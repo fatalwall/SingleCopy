@@ -50,27 +50,26 @@
             this.columns_LastWriteTime = new System.Windows.Forms.ToolStripMenuItem();
             this.columns_LastWriteTimeUTC = new System.Windows.Forms.ToolStripMenuItem();
             this.columns_Attributes = new System.Windows.Forms.ToolStripMenuItem();
-            this.coluns_MD5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.columns_MD5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteConfirmationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripScan = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
-            this.grdFiles = new System.Windows.Forms.DataGridView();
+            this.toolStripSpreadsheet = new System.Windows.Forms.ToolStripButton();
+            this.toolStripToggleViewer = new System.Windows.Forms.ToolStripButton();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.grdFiles = new OutlookStyleControls.OutlookGrid();
             this.viewBox_Text = new System.Windows.Forms.RichTextBox();
             this.viewBox_Picture = new System.Windows.Forms.PictureBox();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
-            this.toolStripToggleViewer = new System.Windows.Forms.ToolStripButton();
-            this.deleteConfirmationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.grdFiles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grdFiles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewBox_Picture)).BeginInit();
             this.SuspendLayout();
             // 
@@ -102,6 +101,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -125,7 +125,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(108, 26);
             this.exitToolStripMenuItem.Text = "&Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -154,9 +154,9 @@
             this.columns_LastWriteTime,
             this.columns_LastWriteTimeUTC,
             this.columns_Attributes,
-            this.coluns_MD5});
+            this.columns_MD5});
             this.columnsToolStripMenuItem.Name = "columnsToolStripMenuItem";
-            this.columnsToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.columnsToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
             this.columnsToolStripMenuItem.Text = "Columns";
             // 
             // columns_Name
@@ -164,7 +164,7 @@
             this.columns_Name.Checked = true;
             this.columns_Name.CheckState = System.Windows.Forms.CheckState.Checked;
             this.columns_Name.Name = "columns_Name";
-            this.columns_Name.Size = new System.Drawing.Size(224, 26);
+            this.columns_Name.Size = new System.Drawing.Size(225, 26);
             this.columns_Name.Text = "Name";
             this.columns_Name.Click += new System.EventHandler(this.columns_Item_Click);
             // 
@@ -173,7 +173,7 @@
             this.columns_Extention.Checked = true;
             this.columns_Extention.CheckState = System.Windows.Forms.CheckState.Checked;
             this.columns_Extention.Name = "columns_Extention";
-            this.columns_Extention.Size = new System.Drawing.Size(224, 26);
+            this.columns_Extention.Size = new System.Drawing.Size(225, 26);
             this.columns_Extention.Text = "Extention";
             this.columns_Extention.Click += new System.EventHandler(this.columns_Item_Click);
             // 
@@ -182,14 +182,14 @@
             this.columns_Directory.Checked = true;
             this.columns_Directory.CheckState = System.Windows.Forms.CheckState.Checked;
             this.columns_Directory.Name = "columns_Directory";
-            this.columns_Directory.Size = new System.Drawing.Size(224, 26);
+            this.columns_Directory.Size = new System.Drawing.Size(225, 26);
             this.columns_Directory.Text = "Directory";
             this.columns_Directory.Click += new System.EventHandler(this.columns_Item_Click);
             // 
             // columns_FullName
             // 
             this.columns_FullName.Name = "columns_FullName";
-            this.columns_FullName.Size = new System.Drawing.Size(224, 26);
+            this.columns_FullName.Size = new System.Drawing.Size(225, 26);
             this.columns_FullName.Text = "Full Name";
             this.columns_FullName.Click += new System.EventHandler(this.columns_Item_Click);
             // 
@@ -198,35 +198,35 @@
             this.columns_Size.Checked = true;
             this.columns_Size.CheckState = System.Windows.Forms.CheckState.Checked;
             this.columns_Size.Name = "columns_Size";
-            this.columns_Size.Size = new System.Drawing.Size(224, 26);
+            this.columns_Size.Size = new System.Drawing.Size(225, 26);
             this.columns_Size.Text = "Size (Bytes)";
             this.columns_Size.Click += new System.EventHandler(this.columns_Item_Click);
             // 
             // columns_IsReadOnly
             // 
             this.columns_IsReadOnly.Name = "columns_IsReadOnly";
-            this.columns_IsReadOnly.Size = new System.Drawing.Size(224, 26);
+            this.columns_IsReadOnly.Size = new System.Drawing.Size(225, 26);
             this.columns_IsReadOnly.Text = "Is Read Only";
             this.columns_IsReadOnly.Click += new System.EventHandler(this.columns_Item_Click);
             // 
             // columns_CreationTime
             // 
             this.columns_CreationTime.Name = "columns_CreationTime";
-            this.columns_CreationTime.Size = new System.Drawing.Size(224, 26);
+            this.columns_CreationTime.Size = new System.Drawing.Size(225, 26);
             this.columns_CreationTime.Text = "Creation Time";
             this.columns_CreationTime.Click += new System.EventHandler(this.columns_Item_Click);
             // 
             // columns_CreationTimeUTC
             // 
             this.columns_CreationTimeUTC.Name = "columns_CreationTimeUTC";
-            this.columns_CreationTimeUTC.Size = new System.Drawing.Size(224, 26);
+            this.columns_CreationTimeUTC.Size = new System.Drawing.Size(225, 26);
             this.columns_CreationTimeUTC.Text = "Creation Time UTC";
             this.columns_CreationTimeUTC.Click += new System.EventHandler(this.columns_Item_Click);
             // 
             // columns_LastAccessTime
             // 
             this.columns_LastAccessTime.Name = "columns_LastAccessTime";
-            this.columns_LastAccessTime.Size = new System.Drawing.Size(224, 26);
+            this.columns_LastAccessTime.Size = new System.Drawing.Size(225, 26);
             this.columns_LastAccessTime.Text = "Last Access Time";
             this.columns_LastAccessTime.Click += new System.EventHandler(this.columns_Item_Click);
             // 
@@ -240,32 +240,41 @@
             // columns_LastWriteTime
             // 
             this.columns_LastWriteTime.Name = "columns_LastWriteTime";
-            this.columns_LastWriteTime.Size = new System.Drawing.Size(224, 26);
+            this.columns_LastWriteTime.Size = new System.Drawing.Size(225, 26);
             this.columns_LastWriteTime.Text = "Last Write Time";
             this.columns_LastWriteTime.Click += new System.EventHandler(this.columns_Item_Click);
             // 
             // columns_LastWriteTimeUTC
             // 
             this.columns_LastWriteTimeUTC.Name = "columns_LastWriteTimeUTC";
-            this.columns_LastWriteTimeUTC.Size = new System.Drawing.Size(224, 26);
+            this.columns_LastWriteTimeUTC.Size = new System.Drawing.Size(225, 26);
             this.columns_LastWriteTimeUTC.Text = "Last Write Time UTC";
             this.columns_LastWriteTimeUTC.Click += new System.EventHandler(this.columns_Item_Click);
             // 
             // columns_Attributes
             // 
             this.columns_Attributes.Name = "columns_Attributes";
-            this.columns_Attributes.Size = new System.Drawing.Size(224, 26);
+            this.columns_Attributes.Size = new System.Drawing.Size(225, 26);
             this.columns_Attributes.Text = "Attributes";
             this.columns_Attributes.Click += new System.EventHandler(this.columns_Item_Click);
             // 
-            // coluns_MD5
+            // columns_MD5
             // 
-            this.coluns_MD5.Checked = true;
-            this.coluns_MD5.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.coluns_MD5.Name = "coluns_MD5";
-            this.coluns_MD5.Size = new System.Drawing.Size(224, 26);
-            this.coluns_MD5.Text = "MD5";
-            this.coluns_MD5.Click += new System.EventHandler(this.columns_Item_Click);
+            this.columns_MD5.Checked = true;
+            this.columns_MD5.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.columns_MD5.Name = "columns_MD5";
+            this.columns_MD5.Size = new System.Drawing.Size(225, 26);
+            this.columns_MD5.Text = "MD5";
+            this.columns_MD5.Click += new System.EventHandler(this.columns_Item_Click);
+            // 
+            // deleteConfirmationToolStripMenuItem
+            // 
+            this.deleteConfirmationToolStripMenuItem.Checked = true;
+            this.deleteConfirmationToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.deleteConfirmationToolStripMenuItem.Name = "deleteConfirmationToolStripMenuItem";
+            this.deleteConfirmationToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.deleteConfirmationToolStripMenuItem.Text = "Delete Confirmation";
+            this.deleteConfirmationToolStripMenuItem.Click += new System.EventHandler(this.deleteConfirmationToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -276,11 +285,11 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripScan,
-            this.toolStripButton3,
-            this.toolStripButton4,
+            this.toolStripSpreadsheet,
             this.toolStripToggleViewer});
             this.toolStrip1.Location = new System.Drawing.Point(0, 28);
             this.toolStrip1.Name = "toolStrip1";
@@ -291,50 +300,33 @@
             // toolStripScan
             // 
             this.toolStripScan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripScan.Image = ((System.Drawing.Image)(resources.GetObject("toolStripScan.Image")));
+            this.toolStripScan.Image = global::SingleCopy.Properties.Resources.scan;
             this.toolStripScan.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripScan.Name = "toolStripScan";
             this.toolStripScan.Size = new System.Drawing.Size(24, 24);
             this.toolStripScan.Text = "Scan";
             this.toolStripScan.Click += new System.EventHandler(this.toolStripScan_Click);
             // 
-            // toolStripButton3
+            // toolStripSpreadsheet
             // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(24, 24);
-            this.toolStripButton3.Text = "Export to Excel";
-            this.toolStripButton3.Visible = false;
+            this.toolStripSpreadsheet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripSpreadsheet.Enabled = false;
+            this.toolStripSpreadsheet.Image = global::SingleCopy.Properties.Resources.spreadsheet;
+            this.toolStripSpreadsheet.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSpreadsheet.Name = "toolStripSpreadsheet";
+            this.toolStripSpreadsheet.Size = new System.Drawing.Size(24, 24);
+            this.toolStripSpreadsheet.Text = "Export Excel";
+            this.toolStripSpreadsheet.Click += new System.EventHandler(this.toolStripSpreadsheet_Click);
             // 
-            // toolStripButton4
+            // toolStripToggleViewer
             // 
-            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
-            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(24, 24);
-            this.toolStripButton4.Text = "Export to PDF";
-            this.toolStripButton4.Visible = false;
-            // 
-            // grdFiles
-            // 
-            this.grdFiles.AllowUserToAddRows = false;
-            this.grdFiles.AllowUserToDeleteRows = false;
-            this.grdFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grdFiles.Location = new System.Drawing.Point(0, 0);
-            this.grdFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.grdFiles.MultiSelect = false;
-            this.grdFiles.Name = "grdFiles";
-            this.grdFiles.ReadOnly = true;
-            this.grdFiles.RowTemplate.Height = 24;
-            this.grdFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdFiles.Size = new System.Drawing.Size(800, 373);
-            this.grdFiles.TabIndex = 0;
-            this.grdFiles.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdFiles_RowEnter);
-            this.grdFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.grdFiles_KeyDown);
+            this.toolStripToggleViewer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripToggleViewer.Image = global::SingleCopy.Properties.Resources.preview_expand;
+            this.toolStripToggleViewer.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripToggleViewer.Name = "toolStripToggleViewer";
+            this.toolStripToggleViewer.Size = new System.Drawing.Size(24, 24);
+            this.toolStripToggleViewer.Text = "Toggle File Viewer";
+            this.toolStripToggleViewer.Click += new System.EventHandler(this.toolStripToggleViewer_Click);
             // 
             // splitContainer
             // 
@@ -355,13 +347,33 @@
             this.splitContainer.SplitterDistance = 496;
             this.splitContainer.TabIndex = 4;
             // 
+            // grdFiles
+            // 
+            this.grdFiles.AllowUserToAddRows = false;
+            this.grdFiles.AllowUserToDeleteRows = false;
+            this.grdFiles.AllowUserToOrderColumns = true;
+            this.grdFiles.CollapseIcon = null;
+            this.grdFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grdFiles.ExpandIcon = null;
+            this.grdFiles.Location = new System.Drawing.Point(0, 0);
+            this.grdFiles.MultiSelect = false;
+            this.grdFiles.Name = "grdFiles";
+            this.grdFiles.ReadOnly = true;
+            this.grdFiles.RowHeadersVisible = false;
+            this.grdFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.grdFiles.Size = new System.Drawing.Size(800, 373);
+            this.grdFiles.TabIndex = 0;
+            this.grdFiles.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdFiles_RowEnter);
+            this.grdFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.grdFiles_KeyDown);
+            // 
             // viewBox_Text
             // 
             this.viewBox_Text.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewBox_Text.Location = new System.Drawing.Point(0, 0);
             this.viewBox_Text.Name = "viewBox_Text";
             this.viewBox_Text.ReadOnly = true;
-            this.viewBox_Text.Size = new System.Drawing.Size(300, 373);
+            this.viewBox_Text.Size = new System.Drawing.Size(96, 100);
             this.viewBox_Text.TabIndex = 1;
             this.viewBox_Text.Text = "";
             // 
@@ -370,7 +382,7 @@
             this.viewBox_Picture.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewBox_Picture.Location = new System.Drawing.Point(0, 0);
             this.viewBox_Picture.Name = "viewBox_Picture";
-            this.viewBox_Picture.Size = new System.Drawing.Size(300, 373);
+            this.viewBox_Picture.Size = new System.Drawing.Size(96, 100);
             this.viewBox_Picture.TabIndex = 0;
             this.viewBox_Picture.TabStop = false;
             // 
@@ -382,25 +394,6 @@
             this.bgWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgWorker_ProgressChanged);
             this.bgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorker_RunWorkerCompleted);
             // 
-            // toolStripToggleViewer
-            // 
-            this.toolStripToggleViewer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripToggleViewer.Image = ((System.Drawing.Image)(resources.GetObject("toolStripToggleViewer.Image")));
-            this.toolStripToggleViewer.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripToggleViewer.Name = "toolStripToggleViewer";
-            this.toolStripToggleViewer.Size = new System.Drawing.Size(24, 24);
-            this.toolStripToggleViewer.Text = "Toggle File Viewer";
-            this.toolStripToggleViewer.Click += new System.EventHandler(this.toolStripToggleViewer_Click);
-            // 
-            // deleteConfirmationToolStripMenuItem
-            // 
-            this.deleteConfirmationToolStripMenuItem.Checked = true;
-            this.deleteConfirmationToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.deleteConfirmationToolStripMenuItem.Name = "deleteConfirmationToolStripMenuItem";
-            this.deleteConfirmationToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
-            this.deleteConfirmationToolStripMenuItem.Text = "Delete Confirmation";
-            this.deleteConfirmationToolStripMenuItem.Click += new System.EventHandler(this.deleteConfirmationToolStripMenuItem_Click);
-            // 
             // frmMaster
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -410,6 +403,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "frmMaster";
@@ -420,11 +414,11 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.grdFiles)).EndInit();
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.grdFiles)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewBox_Picture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -439,9 +433,6 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripScan;
-        private System.Windows.Forms.ToolStripButton toolStripButton3;
-        private System.Windows.Forms.ToolStripButton toolStripButton4;
-        private System.Windows.Forms.DataGridView grdFiles;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatus;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem columnsToolStripMenuItem;
@@ -458,7 +449,7 @@
         private System.Windows.Forms.ToolStripMenuItem columns_LastActionTimeUTC;
         private System.Windows.Forms.ToolStripMenuItem columns_LastWriteTimeUTC;
         private System.Windows.Forms.ToolStripMenuItem columns_Attributes;
-        private System.Windows.Forms.ToolStripMenuItem coluns_MD5;
+        private System.Windows.Forms.ToolStripMenuItem columns_MD5;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.PictureBox viewBox_Picture;
         private System.ComponentModel.BackgroundWorker bgWorker;
@@ -466,6 +457,8 @@
         private System.Windows.Forms.ToolStripProgressBar toolStripStatusBar;
         private System.Windows.Forms.ToolStripButton toolStripToggleViewer;
         private System.Windows.Forms.ToolStripMenuItem deleteConfirmationToolStripMenuItem;
+        private OutlookStyleControls.OutlookGrid grdFiles;
+        private System.Windows.Forms.ToolStripButton toolStripSpreadsheet;
     }
 }
 

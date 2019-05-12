@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SingleCopy")]
-[assembly: AssemblyDescription("Tool to assist in finding and removing duplicate copies of a file")]
+[assembly: AssemblyDescription("Tool to assist in finding and removing duplicate copies of a file.\r\n\r\nIcons from Iconics\r\nLicence: MIT https://github.com/iconic/open-iconic/blob/master/ICON-LICENSE \r\nProject: https://github.com/iconic/open-iconic \r\n\r\nOutlookGridControl \r\nAuthor: Herre Kuijpers \r\nLicence: CPOL https://www.codeproject.com/info/cpol10.aspx  \r\nProject: https://www.codeproject.com/Articles/14388/OutlookGrid-grouping-and-arranging-items-in-Outloo \r\n\r\nNPOI \r\nLicence: Apache v2.0 https://github.com/tonyqus/npoi/blob/master/LICENSE \r\nProject: https://github.com/tonyqus/npoi \r\n\r\nSharpZipLib \r\nLicence: MIT https://github.com/icsharpcode/SharpZipLib/blob/master/LICENSE.txt \r\nProject: https://github.com/icsharpcode/SharpZipLib")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Peter Varney")]
 [assembly: AssemblyProduct("Single Copy")]
-[assembly: AssemblyCopyright("Copyright © Peter Varney 2019")]
+[assembly: AssemblyCopyright("Copyright © 2019 Peter Varney")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.1.0")]
-[assembly: AssemblyFileVersion("0.0.1.0")]
+[assembly: AssemblyVersion("1.0.0.*")]

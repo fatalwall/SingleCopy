@@ -28,7 +28,7 @@ namespace SingleCopy
         }
 
         public static ListEvents<FileInfo> files = new ListEvents<FileInfo>();
-        public static DataTable Table = null;
+        public static DataSet DS = new DataSet();
 
         public static void getFiles(String Path, String[] Exclude = null)
         {
