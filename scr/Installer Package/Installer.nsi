@@ -16,6 +16,7 @@
 
 
 ;Definitions
+!define PRODUCT_PROJECT_NAME "{VS.ProjectName}"
 !define PRODUCT_NAME "{VS.AssemblyTitle}"
 !define PRODUCT_ASSEMBLY_VERSION "{VS.AssemblyVersion}"
 !define PRODUCT_VERSION "{VS.ProductVersion}"
@@ -119,7 +120,7 @@ ShowUnInstDetails show
 
 		;Create Desktop Icon for All Users
 		SetShellVarContext all
-		;CreateShortCut '$desktop\${PRODUCT_NAME}.lnk' '$INSTDIR\${PRODUCT_NAME}.exe' '' '$INSTDIR\${PRODUCT_NAME}.exe' 0 SW_SHOWMAXIMIZED
+		CreateShortCut '$desktop\${PRODUCT_NAME}.lnk' '$INSTDIR\${PRODUCT_PROJECT_NAME}.exe' '' '$INSTDIR\${PRODUCT_PROJECT_NAME}.exe' 0 SW_SHOWMAXIMIZED
 	SectionEnd
 
 	Section -Post
@@ -132,7 +133,7 @@ ShowUnInstDetails show
 		WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_ASSEMBLY_VERSION}"
 		WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
 		WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
-		WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\${PRODUCT_NAME}.exe"
+		WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\${PRODUCT_PROJECT_NAME}.exe"
 
 		;Event Log indicating installation
 		nsExec::Exec 'EVENTCREATE /L APPLICATION /SO "$(^Name)" /T INFORMATION /ID 1000  /D "$(^Name) ${PRODUCT_ASSEMBLY_VERSION} Installed Successfully"'

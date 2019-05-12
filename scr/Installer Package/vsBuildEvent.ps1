@@ -44,6 +44,9 @@ if ($ConfigurationName -eq 'Release') {
 $Company = cmd /c "GetAssemblyValue.exe $argsBase Company" 2`>`&1
 (gc "$workingFile") -replace '{VS.AssemblyCompany}', "$Company" | Out-File "$workingFile"
 
+# ProjectName
+(gc "$workingFile") -replace '{VS.ProjectName}', "$ProjectName" | Out-File "$workingFile"
+
 # ProductName
 $ProductName = cmd /c "GetAssemblyValue.exe $argsBase Product" 2`>`&1
 (gc "$workingFile") -replace '{VS.AssemblyTitle}', "$ProductName" | Out-File "$workingFile"
