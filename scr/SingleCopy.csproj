@@ -82,6 +82,7 @@
     <Compile Include="ExtendedFileInfo\ElementChangeActionType.cs" />
     <Compile Include="ExtendedFileInfo\ElementChangeEventArgs.cs" />
     <Compile Include="ExtendedFileInfo\ExtendedFileInfo.cs" />
+    <Compile Include="ExtendedFileInfo\ExtendedPropertyStorage.cs" />
     <Compile Include="frmAbout.cs">
       <SubType>Form</SubType>
     </Compile>

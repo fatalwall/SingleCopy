@@ -11,25 +11,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace vshed.IO
 {
+    
     public static class ExtendedFileInfo
     {
         public static string md5sum(this FileInfo fileInfo)
+        {
+            fileInfo.md5sumAsync().Wait();            
+            return (string)fileInfo.GetValue("md5sum");
+        }
+        public static Task<string> md5sumAsync(this FileInfo fileInfo)
         {
             using (var md5 = System.Security.Cryptography.MD5.Create())
             {
                 try
                 {
-                    //using (var stream = System.IO.File.Open(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    //{ return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", ""); }
                     using (FileStream fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
-                        //using (StreamReader sr = new StreamReader(fs))
-                        //{
-                            return BitConverter.ToString(md5.ComputeHash(fs)).Replace("-", "");
-                        //}
+                        string hash = (string)fileInfo.GetValue("md5sum")
+                                        ?? BitConverter.ToString(md5.ComputeHash(fs)).Replace("-", "");
+                        if (!(hash is null)) fileInfo.SetValue("md5sum", hash);
+                        return Task.FromResult<string>(hash);
                     }
                 }
                 catch (System.UnauthorizedAccessException) { return null; }
