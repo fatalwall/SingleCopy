@@ -260,8 +260,6 @@
             // 
             // columns_MD5
             // 
-            this.columns_MD5.Checked = true;
-            this.columns_MD5.CheckState = System.Windows.Forms.CheckState.Checked;
             this.columns_MD5.Name = "columns_MD5";
             this.columns_MD5.Size = new System.Drawing.Size(225, 26);
             this.columns_MD5.Text = "MD5";

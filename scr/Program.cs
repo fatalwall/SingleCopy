@@ -10,7 +10,10 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO;
+using vshed.IO;
 using System.Data;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SingleCopy
 {
@@ -29,6 +32,7 @@ namespace SingleCopy
 
         public static ListEvents<FileInfo> files = new ListEvents<FileInfo>();
         public static DataSet DS = new DataSet();
+
 
         public static void getFiles(String Path, String[] Exclude = null)
         {

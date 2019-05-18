@@ -33,7 +33,7 @@ namespace vshed.IO
                     {
                         string hash = (string)fileInfo.GetValue("md5sum")
                                         ?? BitConverter.ToString(md5.ComputeHash(fs)).Replace("-", "");
-                        if (!(hash is null)) fileInfo.SetValue("md5sum", hash);
+                        if (!(hash is null)) { fileInfo.SetValue("md5sum", hash); }
                         return Task.FromResult<string>(hash);
                     }
                 }

@@ -17,6 +17,8 @@ using System.Collections;
 using System.Data;
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace SingleCopy
 {
@@ -62,6 +64,7 @@ namespace SingleCopy
                 //Friendly Headers
                 grdFiles.Columns["Length"].HeaderText = "Size (Bytes)";
                 grdFiles.Columns["Length"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //grdFiles.Columns.Add("md5sum","MD5");
                 grdFiles.Columns["md5sum"].HeaderText = "MD5";
                 grdFiles.Columns["md5sum"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 grdFiles.Columns["IsReadOnly"].HeaderText = "Is Read Only";
@@ -102,7 +105,14 @@ namespace SingleCopy
         {
             Program.DS.Tables.Clear();
             Program.getFiles((string)e.Argument, (from Config.ExcludeElement ee in Config.Folders.getCurrentInstance().Excludes select ee.Folder).ToArray<string>());
-            bgWorker.ReportProgress(-1);   
+            bgWorker.ReportProgress(-1);
+            List<Task> md5Tasks = new List<Task>();
+            foreach (FileInfo f in Program.files)
+            {
+                md5Tasks.Add(f.md5sumAsync());
+            }
+            Task.WaitAll(md5Tasks.ToArray());
+            
             Program.DS.Tables.Add(Program.files.ToDataTable());
         }
         private void bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -118,6 +128,7 @@ namespace SingleCopy
         private void bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             grdFiles.BindData(Program.DS, "Files");
+            //grdFiles.BindData(Program.files,null); direct binding loses the extended property
             DataGridView_UpdateColumns();
             toolStripStatus.Text = string.Format("{0:n0} Files scanned", Program.files.Count());
             toolStripStatusBar.Visible = false;
@@ -274,6 +285,9 @@ namespace SingleCopy
             {
                 DataRow obj1 = (DataRow)x;
                 DataRow obj2 = (DataRow)y;
+                //FileInfo obj1 = (FileInfo)x;
+                //FileInfo obj2 = (FileInfo)y;
+                //return string.Compare(obj1.md5sum()??"", obj2.md5sum()??"") * (direction == ListSortDirection.Ascending ? 1 : -1);
                 return string.Compare(obj1[columnIndex].ToString(), obj2[columnIndex].ToString()) * (direction == ListSortDirection.Ascending ? 1 : -1);
             }
             #endregion
