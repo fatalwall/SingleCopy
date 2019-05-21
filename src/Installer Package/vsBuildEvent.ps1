@@ -29,7 +29,7 @@ copy "..\..\LICENSE"  -Destination (New-Item "$workingDir" -Type container -forc
 #	Insert Assembly Varables
 #>
 # Version
-$argsBase = $SolutionDir + 'bin\'+ $ConfigurationName + '\' + $ProjectName + '.exe';
+$argsBase = $SolutionDir + $ProjectName + '\bin\'+ $ConfigurationName + '\' + $ProjectName + '.exe';
 $Version = cmd /c "GetAssemblyValue.exe $argsBase Version" 2`>`&1
 (gc "$workingFile") -replace '{VS.ProductVersion}', "$Version" | Out-File "$workingFile"
 if ($ConfigurationName -eq 'Release') {

@@ -18,6 +18,7 @@ namespace vshed.IO
     
     public static class Extended_FileInfo
     {
+        [TreatAsProperty(true)]
         public static string md5sum(this FileInfo fileInfo)
         {
             fileInfo.md5sumAsync().Wait();            

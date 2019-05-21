@@ -116,7 +116,7 @@ ShowUnInstDetails show
 		SetOutPath "$INSTDIR"
 
 		;Write Service Files
-		File /r /x "*.pdb" /x "*.xml" "..\..\..\bin\${PRODUCT_BUILD_TYPE}\*"
+		File /r /x "*.pdb" /x "*.xml" "..\..\..\${PRODUCT_PROJECT_NAME}\bin\${PRODUCT_BUILD_TYPE}\*"
 
 		;Create Desktop Icon for All Users
 		SetShellVarContext all
