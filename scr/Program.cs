@@ -30,7 +30,7 @@ namespace SingleCopy
             Application.Run(new frmMaster());
         }
 
-        public static ListEvents<FileInfo> files = new ListEvents<FileInfo>();
+        public static FileInfoCollection files = new FileInfoCollection();
         public static DataSet DS = new DataSet();
 
 

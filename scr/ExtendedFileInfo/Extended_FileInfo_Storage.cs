@@ -3,7 +3,7 @@ using System.IO;
 
 namespace vshed.IO
 {
-    public static class ExtendedPropertyStorage
+    public static class Extended_FileInfo_Storage
     {
         private static Dictionary<object, Dictionary<string, object>> ExtendedStorage = new Dictionary<object, Dictionary<string, object>>();
         private static bool PropertyExists(this FileInfo fileInfo, string name) { return (ExtendedStorage.ContainsKey(fileInfo) && ExtendedStorage[fileInfo].ContainsKey(name)); }

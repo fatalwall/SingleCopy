@@ -27,12 +27,12 @@ namespace SingleCopy
         public frmMaster()
         {
             InitializeComponent();
-            Program.files.ElementChange += fileListchange;
+            Program.files.ItemsChanged += fileListchange;
         }
 
-        private void fileListchange(object sender, ElementChangeEventArgs e)
+        private void fileListchange(object sender, FileInfoCollectionEventArgs e)
         {
-            try { bgWorker.ReportProgress(((ListEvents<FileInfo>)sender).Count()); }
+            try { bgWorker.ReportProgress(((FileInfoCollection)sender).Count()); }
             catch (Exception) {}//Prevent issue with threading
         }
 
@@ -40,12 +40,14 @@ namespace SingleCopy
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e) { (new frmAbout()).ShowDialog(); }
 
+        private DateTime startTime;
         private void toolStripScan_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dir = new FolderBrowserDialog() { ShowNewFolderButton = false, RootFolder = Environment.SpecialFolder.MyComputer };
 
             if (dir.ShowDialog() == DialogResult.OK)
             {
+                startTime = DateTime.Now;
                 toolStripStatus.Text = "Scanning Files";
                 toolStripSpreadsheet.Enabled = false;
                 toolStripScan.Enabled = false;
@@ -106,12 +108,13 @@ namespace SingleCopy
             Program.DS.Tables.Clear();
             Program.getFiles((string)e.Argument, (from Config.ExcludeElement ee in Config.Folders.getCurrentInstance().Excludes select ee.Folder).ToArray<string>());
             bgWorker.ReportProgress(-1);
-            List<Task> md5Tasks = new List<Task>();
-            foreach (FileInfo f in Program.files)
-            {
-                md5Tasks.Add(f.md5sumAsync());
-            }
-            Task.WaitAll(md5Tasks.ToArray());
+            //List<Task> md5Tasks = new List<Task>();
+            //foreach (FileInfo f in Program.files)
+            //{
+            //    md5Tasks.Add(f.md5sumAsync());
+            //}
+            //Task.WaitAll(md5Tasks.ToArray());
+            Program.files.WaitMd5();
             
             Program.DS.Tables.Add(Program.files.ToDataTable());
         }
@@ -130,7 +133,8 @@ namespace SingleCopy
             grdFiles.BindData(Program.DS, "Files");
             //grdFiles.BindData(Program.files,null); direct binding loses the extended property
             DataGridView_UpdateColumns();
-            toolStripStatus.Text = string.Format("{0:n0} Files scanned", Program.files.Count());
+            TimeSpan elapse = DateTime.Now.Subtract(startTime);
+            toolStripStatus.Text = string.Format("{0:n0} Files scanned in {1} minutes", Program.files.Count(),elapse.TotalMinutes);
             toolStripStatusBar.Visible = false;
             toolStripScan.Enabled = true;
             toolStripSpreadsheet.Enabled = true;

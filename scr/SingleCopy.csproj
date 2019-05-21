@@ -78,11 +78,9 @@
     <Compile Include="Config\ExcludeElement.cs" />
     <Compile Include="Config\ExcludeCollection.cs" />
     <Compile Include="Config\Folders.cs" />
-    <Compile Include="ExtendedFileInfo\ElementChangeAction.cs" />
-    <Compile Include="ExtendedFileInfo\ElementChangeActionType.cs" />
-    <Compile Include="ExtendedFileInfo\ElementChangeEventArgs.cs" />
-    <Compile Include="ExtendedFileInfo\ExtendedFileInfo.cs" />
-    <Compile Include="ExtendedFileInfo\ExtendedPropertyStorage.cs" />
+    <Compile Include="ExtendedFileInfo\Extended_FileInfo.cs" />
+    <Compile Include="ExtendedFileInfo\Extended_FileInfo_Storage.cs" />
+    <Compile Include="ExtendedFileInfo\FileInfoCollection.cs" />
     <Compile Include="frmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,7 +93,6 @@
     <Compile Include="frmMaster.Designer.cs">
       <DependentUpon>frmMaster.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExtendedFileInfo\ListEvents.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmAbout.resx">

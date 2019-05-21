@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace vshed.IO
 {
     
-    public static class ExtendedFileInfo
+    public static class Extended_FileInfo
     {
         public static string md5sum(this FileInfo fileInfo)
         {
@@ -42,6 +42,7 @@ namespace vshed.IO
             }
         }
 
+        #region "DataTable/DataRow"
         private static DataTable tableSchema;
         private static DataRow NewRow(FileInfo fileInfo)
         {
@@ -55,18 +56,19 @@ namespace vshed.IO
             }
             return tableSchema.NewRow();
         }
+
         public static DataRow ToDataRow(this FileInfo fileInfo, DataRow dataRow = null)
         {
             if (dataRow is null) { dataRow = NewRow(fileInfo); }
             //Fill in row columns - FileInfo Property or ExtendedFileInfo Method or Null
             foreach (string c in dataRow.Table.Columns.Cast<DataColumn>().Select(n => n.ColumnName))
             {
-                dataRow[c] = fileInfo.GetType()?.GetProperty(c)?.GetValue(fileInfo) ?? typeof(ExtendedFileInfo)?.GetMethod(c).Invoke(fileInfo, new[] { fileInfo }) ?? null; 
+                dataRow[c] = fileInfo.GetType()?.GetProperty(c)?.GetValue(fileInfo) ?? typeof(Extended_FileInfo)?.GetMethod(c).Invoke(fileInfo, new[] { fileInfo }) ?? null; 
             }
             return dataRow;
         }
 
-        public static DataRow[] ToDataRows(this List<FileInfo> fileInfos, DataTable dataTable = null)
+        public static DataRow[] ToDataRows(this IEnumerable<FileInfo> fileInfos, DataTable dataTable = null)
         { return ToDataRows(fileInfos.ToArray(), dataTable); }
         public static DataRow[] ToDataRows(this FileInfo[] fileInfos, DataTable dataTable = null)
         {
@@ -86,7 +88,7 @@ namespace vshed.IO
             return dataRows.ToArray();
         }
 
-        public static DataTable ToDataTable(this List<FileInfo> fileInfos, DataTable dataTable = null)
+        public static DataTable ToDataTable(this IEnumerable<FileInfo> fileInfos, DataTable dataTable = null)
         { return ToDataTable(fileInfos.ToArray(), dataTable); }
         public static DataTable ToDataTable(this FileInfo[] fileInfos, DataTable dataTable = null)
         {
@@ -102,6 +104,6 @@ namespace vshed.IO
             { dataTable.Rows.Add(f.ToDataRow(dataTable.NewRow())); }
             return dataTable;
         }
-
+        #endregion
     }
 }

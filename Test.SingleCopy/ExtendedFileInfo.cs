@@ -31,7 +31,28 @@ namespace Test.SingleCopy
             //You can either pull the value from the Task or call the non async function.
             Assert.AreEqual("2AAAD2B38E77F4F0E2045CD118116F80", array[0].Result);//file.md5sum());
             Assert.AreEqual("2AAAD2B38E77F4F0E2045CD118116F80", file2.md5sum());
+        }
 
+        [TestMethod]
+        public void FileInfoCollection_Add_md5sum()
+        {
+            FileInfoCollection files = new FileInfoCollection();
+            files.Add(new FileInfo(@"Test File\md5sum Test document.txt"));
+            files.Add(new FileInfo(@"Test File\md5sum Test document2.txt"));
+            files.WaitMd5();
+
+            Assert.AreEqual("2AAAD2B38E77F4F0E2045CD118116F80", files[0].md5sum());
+            Assert.AreEqual("2AAAD2B38E77F4F0E2045CD118116F80", files[1].md5sum());
+        }
+
+        [TestMethod]
+        public void FileInfoCollection_AddRange_md5sum()
+        {
+            FileInfoCollection files = new FileInfoCollection();
+            files.AddRange((new DirectoryInfo(@"Test File\")).GetFiles());
+            files.WaitMd5();
+
+            Assert.AreEqual("2AAAD2B38E77F4F0E2045CD118116F80", files[0].md5sum());
         }
     }
 }
