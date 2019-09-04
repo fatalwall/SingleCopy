@@ -14,6 +14,9 @@ using System.Data;
 using System.Reflection;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Linq;
+using vshed.Control;
+using vshed.IO;
 
 namespace OutlookStyleControls
 {
@@ -192,7 +195,11 @@ namespace OutlookStyleControls
             BindingFlags bf = BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty;
             PropertyInfo[] props = list[0].GetType().GetProperties();
             foreach (PropertyInfo pi in props)
-                    Columns.Add(pi.Name);
+                Columns.Add(pi.Name);
+            
+            //Add methods flagged as treat as property - added by Peter Varney
+            foreach (MethodInfo me in OutlookGridAttribute.GetMethods(dataSource.GetType()))
+                Columns.Add(me.Name);
 
             foreach (object obj in list)
             {
@@ -201,6 +208,11 @@ namespace OutlookStyleControls
                 {
                     object result = obj.GetType().InvokeMember(pi.Name, bf, null, obj, null);
                     row.Add(result);  
+                }
+                foreach (MethodInfo me in OutlookGridAttribute.GetMethods(dataSource.GetType()))
+                {
+                    object result = me.Invoke(obj, new object[] { obj });
+                    row.Add(result);
                 }
                 Rows.Add(row);
             }

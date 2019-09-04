@@ -12,13 +12,15 @@ using System.Linq;
 using System.IO;
 using System.Data;
 using System.Threading.Tasks;
+using System.Reflection;
+using vshed.Control;
 
 namespace vshed.IO
 {
     
     public static class Extended_FileInfo
     {
-        [TreatAsProperty(true)]
+        [OutlookGridAttribute(TreatAsProperty =true)]
         public static string md5sum(this FileInfo fileInfo)
         {
             fileInfo.md5sumAsync().Wait();            

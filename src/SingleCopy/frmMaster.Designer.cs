@@ -62,6 +62,7 @@
             this.viewBox_Text = new System.Windows.Forms.RichTextBox();
             this.viewBox_Picture = new System.Windows.Forms.PictureBox();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
+            this.PluginSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -125,7 +126,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(108, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.exitToolStripMenuItem.Text = "&Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -288,7 +289,8 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripScan,
             this.toolStripSpreadsheet,
-            this.toolStripToggleViewer});
+            this.toolStripToggleViewer,
+            this.PluginSeparator});
             this.toolStrip1.Location = new System.Drawing.Point(0, 28);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(800, 27);
@@ -392,6 +394,11 @@
             this.bgWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgWorker_ProgressChanged);
             this.bgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorker_RunWorkerCompleted);
             // 
+            // PluginSeparator
+            // 
+            this.PluginSeparator.Name = "PluginSeparator";
+            this.PluginSeparator.Size = new System.Drawing.Size(6, 27);
+            // 
             // frmMaster
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -457,6 +464,7 @@
         private System.Windows.Forms.ToolStripMenuItem deleteConfirmationToolStripMenuItem;
         private OutlookStyleControls.OutlookGrid grdFiles;
         private System.Windows.Forms.ToolStripButton toolStripSpreadsheet;
+        private System.Windows.Forms.ToolStripSeparator PluginSeparator;
     }
 }
 

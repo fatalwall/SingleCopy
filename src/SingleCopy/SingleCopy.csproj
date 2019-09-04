@@ -78,7 +78,9 @@
     <Compile Include="ExtendedFileInfo\Extended_FileInfo.cs" />
     <Compile Include="ExtendedFileInfo\Extended_FileInfo_Storage.cs" />
     <Compile Include="ExtendedFileInfo\FileInfoCollection.cs" />
-    <Compile Include="ExtendedFileInfo\TreatAsPropertyAttribute.cs" />
+    <Compile Include="OutlookGrid\FileInfoComparer.cs" />
+    <Compile Include="OutlookGrid\DataRowComparer.cs" />
+    <Compile Include="OutlookGrid\OutlookGridAttribute.cs" />
     <Compile Include="frmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +151,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SingleCopy.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugins\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

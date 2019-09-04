@@ -93,7 +93,8 @@ namespace SingleCopy
                     }
                 }
                 grdFiles.GroupTemplate.Column = grdFiles.Columns["md5sum"];
-                grdFiles.Sort(new DataRowComparer(grdFiles.Columns["md5sum"].Index, ListSortDirection.Ascending));
+                //grdFiles.Sort(new FileInfoComparer(grdFiles.Columns["md5sum"].Index, ListSortDirection.Ascending)); //used if bidning FileInfo directly
+                grdFiles.Sort(new OutlookStyleControls.DataRowComparer(grdFiles.Columns["md5sum"].Index, ListSortDirection.Ascending));//use when binding data set
             }
         }
 
@@ -108,12 +109,6 @@ namespace SingleCopy
             Program.DS.Tables.Clear();
             Program.getFiles((string)e.Argument, (from Config.ExcludeElement ee in Config.Folders.getCurrentInstance().Excludes select ee.Folder).ToArray<string>());
             bgWorker.ReportProgress(-1);
-            //List<Task> md5Tasks = new List<Task>();
-            //foreach (FileInfo f in Program.files)
-            //{
-            //    md5Tasks.Add(f.md5sumAsync());
-            //}
-            //Task.WaitAll(md5Tasks.ToArray());
             Program.files.WaitMd5();
             
             Program.DS.Tables.Add(Program.files.ToDataTable());
@@ -131,7 +126,7 @@ namespace SingleCopy
         private void bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             grdFiles.BindData(Program.DS, "Files");
-            //grdFiles.BindData(Program.files,null); direct binding loses the extended property
+            //grdFiles.BindData(Program.files,null); //This method taxs the cpu when the grid is updated. Best to convert to a dataset first
             DataGridView_UpdateColumns();
             TimeSpan elapse = DateTime.Now.Subtract(startTime);
             toolStripStatus.Text = string.Format("{0:n0} Files scanned in {1} minutes", Program.files.Count(),elapse.TotalMinutes);
@@ -272,30 +267,7 @@ namespace SingleCopy
             ((ToolStripMenuItem)sender).Checked = !((ToolStripMenuItem)sender).Checked;
         }
 
-        public class DataRowComparer : IComparer
-        {
-            ListSortDirection direction;
-            int columnIndex;
-
-            public DataRowComparer(int columnIndex, ListSortDirection direction)
-            {
-                this.columnIndex = columnIndex;
-                this.direction = direction;
-            }
-
-            #region IComparer Members
-
-            public int Compare(object x, object y)
-            {
-                DataRow obj1 = (DataRow)x;
-                DataRow obj2 = (DataRow)y;
-                //FileInfo obj1 = (FileInfo)x;
-                //FileInfo obj2 = (FileInfo)y;
-                //return string.Compare(obj1.md5sum()??"", obj2.md5sum()??"") * (direction == ListSortDirection.Ascending ? 1 : -1);
-                return string.Compare(obj1[columnIndex].ToString(), obj2[columnIndex].ToString()) * (direction == ListSortDirection.Ascending ? 1 : -1);
-            }
-            #endregion
-        }
+        
 
         private void toolStripSpreadsheet_Click(object sender, EventArgs e)
         {
