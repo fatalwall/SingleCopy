@@ -17,16 +17,10 @@ namespace ExamplePlugin
     {
         public void OnClick(object sender, EventArgs e)
         {
-            MessageBox.Show(string.Format("{0} has been pressed", (string)MetadataAttribute("Text")), (string)MetadataAttribute("Name"), MessageBoxButtons.OK);
-        }
+            IButtonMetadata meta = PluginManager.GetMedadata(this.GetType());
 
-        protected object MetadataAttribute(string Name)
-        {
-            foreach (var a in this.GetType().GetCustomAttributes(typeof(ExportMetadataAttribute), true).OfType<ExportMetadataAttribute>().Where(a => a.Name == Name))
-            {
-                return a.Value;
-            }
-            return null;
+            MessageBox.Show(string.Format("{0} has been pressed", meta.Text), meta.Name, MessageBoxButtons.OK);
+            PluginLogger.Debug("{0} has been pressed", meta.Text);
         }
     }
 }

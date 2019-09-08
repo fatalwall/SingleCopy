@@ -11,12 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SingleCopy.Plugin
@@ -29,9 +28,28 @@ namespace SingleCopy.Plugin
 
         private static frmMaster Form => Application.OpenForms.OfType<frmMaster>().Single();
 
-        public static OutlookGrid DataGrid => Form.Controls.OfType<OutlookGrid>().Single();
+        public static OutlookGrid DataGrid => Form.Controls.OfType<SplitContainer>().Single().Panel1.Controls.OfType<OutlookGrid>().Single();
         public static void StartScan(string Path) { Form.StartScan(Path); }
         public static ToolStrip toolStrip => Form.Controls.OfType<ToolStrip>().Where(t => t.Name=="toolStrip1").Single();
+
+        #region "Fetch Metadata"
+        public static dynamic GetMedadata()
+        {
+            return GetMedadata((new StackTrace()).GetFrame(1).GetMethod().ReflectedType);
+        }
+        public static dynamic GetMedadata(Type type)
+        {
+            if (type.GetInterfaces().Contains(typeof(IButton)))
+                return GetManager().Buttons.Where(p => p.Value.GetType() == type).Single().Metadata;
+            if (type.GetInterfaces().Contains(typeof(IMenu)))
+                return GetManager().Menus.Where(p => p.Value.GetType() == type).Single().Metadata;
+            if (type.GetInterfaces().Contains(typeof(IPreScanAction)))
+                return GetManager().PreScanActions.Where(p => p.Value.GetType() == type).Single().Metadata;
+            if (type.GetInterfaces().Contains(typeof(IPostScanAction)))
+                return GetManager().PostScanActions.Where(p => p.Value.GetType() == type).Single().Metadata;
+            return null;//If not one of the above types
+        }
+        #endregion
 
         #region "Plugin Module Types"
         [ImportMany]
@@ -58,7 +76,7 @@ namespace SingleCopy.Plugin
         }
 
         [ImportMany]
-        private IEnumerable<Lazy<IMenu, IMenuMetadata>> Menu;
+        private IEnumerable<Lazy<IMenu, IMenuMetadata>> Menus;
 
         [ImportMany]
         private IEnumerable<Lazy<IPostScanAction, IPostScanActionMetadata>> PostScanActions;
