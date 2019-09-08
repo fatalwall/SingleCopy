@@ -8,6 +8,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using NLog;
 
@@ -51,6 +52,6 @@ namespace SingleCopy.Plugin
 
 
         /* FIX ME - Needs to point to the plugins assembly */
-        private static Logger GetCallersLogger() => LogManager.GetLogger(Assembly.GetCallingAssembly().FullName);
+        private static Logger GetCallersLogger() => LogManager.GetLogger((new StackTrace()).GetFrame(2).GetMethod().ReflectedType.FullName);
     }
 }
