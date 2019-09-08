@@ -13,12 +13,9 @@ using System.IO;
 using System.Windows.Forms;
 using vshed.IO;
 using OutlookStyleControls;
-using System.Collections;
 using System.Data;
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace SingleCopy
 {
@@ -274,11 +271,10 @@ namespace SingleCopy
             ((ToolStripMenuItem)sender).Checked = !((ToolStripMenuItem)sender).Checked;
         }
 
-        
 
         private void toolStripSpreadsheet_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFile = new SaveFileDialog() { FileName="SingleCopy Export", Filter = "Excel Spreadsheet (*.xlsx)|*.xlsx" };
+            SaveFileDialog saveFile = new SaveFileDialog() { FileName = "SingleCopy Export", Filter = "Excel Spreadsheet (*.xlsx)|*.xlsx" };
             if (saveFile.ShowDialog(this) == DialogResult.OK)
             {
                 IWorkbook workbook = new XSSFWorkbook();
