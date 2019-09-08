@@ -47,12 +47,19 @@ namespace SingleCopy
 
             if (dir.ShowDialog() == DialogResult.OK)
             {
-                startTime = DateTime.Now;
-                toolStripStatus.Text = "Scanning Files";
-                toolStripSpreadsheet.Enabled = false;
-                toolStripScan.Enabled = false;
-                bgWorker.RunWorkerAsync(dir.SelectedPath);
+                StartScan(dir.SelectedPath);
             }
+        }
+        public void StartScan(string Path)
+        {
+            if (string.IsNullOrWhiteSpace(Path)) throw new ArgumentNullException(Path);
+            if (!System.IO.Directory.Exists(Path)) throw new ArgumentException("Value is not valid or your account does not have permissions to access the folder", "Path", new DirectoryNotFoundException(string.Format("'{0}' could not be found", Path)));
+            
+            startTime = DateTime.Now;
+            toolStripStatus.Text = "Scanning Files";
+            toolStripSpreadsheet.Enabled = false;
+            toolStripScan.Enabled = false;
+            bgWorker.RunWorkerAsync(Path);
         }
 
         private void DataGridView_UpdateColumns()
@@ -317,6 +324,11 @@ namespace SingleCopy
                     s.Close();
                 }
             }
+        }
+
+        private void frmMaster_Load(object sender, EventArgs e)
+        {
+            Plugin.PluginManager.GetManager();
         }
     }
 }
