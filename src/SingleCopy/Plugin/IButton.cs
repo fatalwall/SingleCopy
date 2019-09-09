@@ -18,10 +18,7 @@ namespace SingleCopy.Plugin
 
     public interface IButtonMetadata
     {
-        string Name { get; }
-
         string ToolBarGroup { get; }
-
         System.Windows.Forms.ToolStripItemDisplayStyle DisplayStyle { get; }
         string Text { get; }
         string ToolTip { get; }

@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="ExampleButtonA.cs" />
     <Compile Include="ExampleButtonB.cs" />
+    <Compile Include="ExampleMenuD.cs" />
+    <Compile Include="ExampleMenuC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

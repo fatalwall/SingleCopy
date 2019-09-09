@@ -32,6 +32,9 @@ namespace SingleCopy.Plugin
         public static void StartScan(string Path) { Form.StartScan(Path); }
         public static ToolStrip toolStrip => Form.Controls.OfType<ToolStrip>().Where(t => t.Name=="toolStrip1").Single();
 
+        private static MenuStrip menuStrip => Form.Controls.OfType<MenuStrip>().Single();
+
+
         #region "Fetch Metadata"
         public static dynamic GetMedadata()
         {
@@ -77,6 +80,25 @@ namespace SingleCopy.Plugin
 
         [ImportMany]
         private IEnumerable<Lazy<IMenu, IMenuMetadata>> Menus;
+        private void InitilizeMenus()
+        {
+            ToolStripMenuItem plugins = new ToolStripMenuItem("Plugins");
+            foreach (var menu in Menus.OrderBy(p => p.Metadata.Text))
+            {
+                //Load Resource Manager for Icons
+                var resourceManager = new System.Resources.ResourceManager(menu.Value.GetType().Assembly.GetName().Name + ".Properties.Resources"
+                    , menu.Value.GetType().Assembly);
+
+                //Create menu
+                var m = new ToolStripMenuItem(menu.Metadata.Text, (Bitmap)resourceManager.GetObject(menu.Metadata.Icon));
+                m.ToolTipText = menu.Metadata.ToolTip;
+                try { m.DropDownItems.AddRange(menu.Value.DropDownItems); } catch(NotImplementedException) { /*Allow for no child menus*/} catch (ArgumentNullException) { /*Allow for no child menus*/}
+                m.Click += menu.Value.OnClick;
+                plugins.DropDownItems.Add(m);
+            }
+            menuStrip.Items.Insert(menuStrip.Items.IndexOfKey("optionsToolStripMenuItem") +1, plugins);
+        }
+
 
         [ImportMany]
         private IEnumerable<Lazy<IPostScanAction, IPostScanActionMetadata>> PostScanActions;
@@ -89,7 +111,9 @@ namespace SingleCopy.Plugin
         {
             AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolver;
             DoImport();
+            InitilizeMenus();
             InitilizeButtons();
+            
         }
 
         private void DoImport()

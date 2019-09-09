@@ -14,14 +14,12 @@ namespace SingleCopy.Plugin
 {
     public interface IMenu
     {
-        ToolStripItem[] DropDownItems();
+        ToolStripMenuItem[] DropDownItems { get; }
         void OnClick(object sender, EventArgs e);
     }
 
     public interface IMenuMetadata
     {
-        string Name { get; }
-
         string Text { get; }
         string ToolTip { get; }
         string Icon { get; }

@@ -7,7 +7,6 @@ using System.Linq;
 namespace ExamplePlugin
 {
     [Export(typeof(IButton))]
-    [ExportMetadata("Name", "Example Plugin")]
     [ExportMetadata("ToolBarGroup", "Example Buttons")]
     [ExportMetadata("DisplayStyle", ToolStripItemDisplayStyle.Image)]
     [ExportMetadata("Text", "Button A")]
@@ -19,7 +18,7 @@ namespace ExamplePlugin
         {
             IButtonMetadata meta = PluginManager.GetMedadata();
             
-            MessageBox.Show(string.Format("{0} has been pressed\r\n\r\nDataGrid contains {1} rows", meta.Text, PluginManager.DataGrid.Rows.Count), meta.Name, MessageBoxButtons.OK);
+            MessageBox.Show(string.Format("{0} has been pressed\r\n\r\nDataGrid contains {1} rows", meta.Text, PluginManager.DataGrid.Rows.Count), this.GetType().Assembly.GetName().Name, MessageBoxButtons.OK);
             PluginLogger.Debug("{0} has been pressed", meta.Text);
         }
     }
