@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SingleCopy.Properties {
+namespace ExcelExport.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SingleCopy.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SingleCopy.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ExcelExport.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,40 +63,10 @@ namespace SingleCopy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap preview_collapse {
+        internal static System.Drawing.Bitmap spreadsheet {
             get {
-                object obj = ResourceManager.GetObject("preview_collapse", resourceCulture);
+                object obj = ResourceManager.GetObject("spreadsheet", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap preview_expand {
-            get {
-                object obj = ResourceManager.GetObject("preview_expand", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap scan {
-            get {
-                object obj = ResourceManager.GetObject("scan", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon SingleCopy {
-            get {
-                object obj = ResourceManager.GetObject("SingleCopy", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
     }

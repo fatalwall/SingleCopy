@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="ExtendedFileInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PluginLoggerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SingleCopy\SingleCopy.csproj">

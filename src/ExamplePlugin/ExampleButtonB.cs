@@ -8,6 +8,7 @@ namespace ExamplePlugin
 {
     [Export(typeof(IButton))]
     [ExportMetadata("ToolBarGroup", "Example Buttons")]
+    [ExportMetadata("Weight", -1)]
     [ExportMetadata("DisplayStyle", ToolStripItemDisplayStyle.ImageAndText)]
     [ExportMetadata("Text", "Button B")]
     [ExportMetadata("ToolTip", "Example Button B")]

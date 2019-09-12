@@ -14,8 +14,6 @@ using System.Windows.Forms;
 using vshed.IO;
 using OutlookStyleControls;
 using System.Data;
-using NPOI.XSSF.UserModel;
-using NPOI.SS.UserModel;
 
 namespace SingleCopy
 {
@@ -54,7 +52,6 @@ namespace SingleCopy
             
             startTime = DateTime.Now;
             toolStripStatus.Text = "Scanning Files";
-            toolStripSpreadsheet.Enabled = false;
             toolStripScan.Enabled = false;
             bgWorker.RunWorkerAsync(Path);
         }
@@ -136,7 +133,6 @@ namespace SingleCopy
             toolStripStatus.Text = string.Format("{0:n0} Files scanned in {1} minutes", Program.files.Count(),elapse.TotalMinutes);
             toolStripStatusBar.Visible = false;
             toolStripScan.Enabled = true;
-            toolStripSpreadsheet.Enabled = true;
             Program.files.Clear();
         }
 
@@ -271,56 +267,6 @@ namespace SingleCopy
             ((ToolStripMenuItem)sender).Checked = !((ToolStripMenuItem)sender).Checked;
         }
 
-
-        private void toolStripSpreadsheet_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog saveFile = new SaveFileDialog() { FileName = "SingleCopy Export", Filter = "Excel Spreadsheet (*.xlsx)|*.xlsx" };
-            if (saveFile.ShowDialog(this) == DialogResult.OK)
-            {
-                IWorkbook workbook = new XSSFWorkbook();
-                ISheet sheet = workbook.CreateSheet("SingleCopy Export");
-
-                IRow sheetRow = sheet.CreateRow(0);
-                //Output Column Headers
-                foreach (DataGridViewColumn col in grdFiles.Columns)
-                {
-                    if (col.Visible)
-                    {
-                        ICell cell = sheetRow.CreateCell(sheetRow.LastCellNum >= 0 ? sheetRow.LastCellNum : 0);
-                        cell.SetCellValue(col.HeaderText);
-                    }
-                }
-                int LastCellNum = sheetRow.LastCellNum - 1;
-
-                //Output Table Content
-                foreach (OutlookGridRow row in grdFiles.Rows)
-                {
-                    if (!row.IsGroupRow)
-                    {
-                        sheetRow = sheet.CreateRow(sheet.LastRowNum + 1);
-
-                        foreach (DataGridViewCell col in row.Cells)
-                        {
-                            if (col.Visible)
-                            {
-                                ICell cell = sheetRow.CreateCell(sheetRow.LastCellNum >= 0 ? sheetRow.LastCellNum : 0);
-                                cell.SetCellValue(col.Value?.ToString() ?? "");
-                            }
-                        }
-                    }
-                }
-
-                //Formating
-                sheet.SetAutoFilter(new NPOI.SS.Util.CellRangeAddress(0, sheet.LastRowNum, 0, LastCellNum));
-
-                //Save
-                using (FileStream s = new FileStream(saveFile.FileName, FileMode.Create))
-                {
-                    workbook.Write(s);
-                    s.Close();
-                }
-            }
-        }
 
         private void frmMaster_Load(object sender, EventArgs e)
         {

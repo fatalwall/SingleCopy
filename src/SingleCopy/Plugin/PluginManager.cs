@@ -25,8 +25,36 @@ namespace SingleCopy.Plugin
         private static readonly PluginManager manager = new PluginManager();
         public static PluginManager GetManager() => manager;
 
+        public static Dictionary<Assembly, System.Resources.ResourceManager> ResourceManager;
+        public static void LoadResourceManager(Assembly assembly)
+        {
+            if (ResourceManager is null) ResourceManager = new Dictionary<Assembly, System.Resources.ResourceManager>();
+            if (!ResourceManager.ContainsKey(assembly))
+            {
+                ResourceManager.Add
+                (
+                    assembly
+                    , new System.Resources.ResourceManager
+                    (
+                        assembly.GetName().Name + ".Properties.Resources"
+                        , assembly
+                    )
+                );
+            }
+        }
+        public static Bitmap getImage(Assembly assembly, string Name)
+        {
+            Bitmap image = null;
+            if( ResourceManager.ContainsKey(assembly))
+            {
+                image = (Bitmap)ResourceManager[assembly].GetObject(Name);
+            }
+            if (image is null) PluginLogger.Error("'{0}' does not contain an image resource named '{1}'", assembly.GetName().Name, Name);
+            return image;
+        }
 
-        private static frmMaster Form => Application.OpenForms.OfType<frmMaster>().Single();
+
+        public static frmMaster Form => Application.OpenForms.OfType<frmMaster>().Single();
 
         public static OutlookGrid DataGrid => Form.Controls.OfType<SplitContainer>().Single().Panel1.Controls.OfType<OutlookGrid>().Single();
         public static void StartScan(string Path) { Form.StartScan(Path); }
@@ -60,19 +88,18 @@ namespace SingleCopy.Plugin
 
         private void InitilizeButtons()
         {
-            foreach(var button in Buttons)
+            foreach (var button in Buttons.OrderBy(b => b.Metadata.ToolBarGroup).ThenBy(b => b.Metadata.Weight))
             {
                 //Create Seperator if needed for grouping
                 if (!toolStrip.Items.ContainsKey("ToolStripSeparator" + button.Metadata.ToolBarGroup))
                     toolStrip.Items.Add(new ToolStripSeparator() { Name = "ToolStripSeparator" + button.Metadata.ToolBarGroup });
 
                 //Load Resource Manager for Icons
-                var resourceManager = new System.Resources.ResourceManager(button.Value.GetType().Assembly.GetName().Name + ".Properties.Resources"
-                    , button.Value.GetType().Assembly);
+                LoadResourceManager(button.Value.GetType().Assembly);
 
                 //Create button
                 toolStrip.Items.Insert(toolStrip.Items.IndexOfKey("ToolStripSeparator" + button.Metadata.ToolBarGroup)
-                    , new ToolStripButton(button.Metadata.Text, (Bitmap)resourceManager.GetObject(button.Metadata.Icon), button.Value.OnClick)
+                    , new ToolStripButton(button.Metadata.Text, getImage(button.Value.GetType().Assembly, button.Metadata.Icon), button.Value.OnClick)
                         { ToolTipText = button.Metadata.ToolTip, DisplayStyle = button.Metadata.DisplayStyle});
  
             }
@@ -86,11 +113,10 @@ namespace SingleCopy.Plugin
             foreach (var menu in Menus.OrderBy(p => p.Metadata.Text))
             {
                 //Load Resource Manager for Icons
-                var resourceManager = new System.Resources.ResourceManager(menu.Value.GetType().Assembly.GetName().Name + ".Properties.Resources"
-                    , menu.Value.GetType().Assembly);
+                LoadResourceManager(menu.Value.GetType().Assembly);
 
                 //Create menu
-                var m = new ToolStripMenuItem(menu.Metadata.Text, (Bitmap)resourceManager.GetObject(menu.Metadata.Icon));
+                var m = new ToolStripMenuItem(menu.Metadata.Text, getImage(menu.Value.GetType().Assembly, menu.Metadata.Icon));
                 m.ToolTipText = menu.Metadata.ToolTip;
                 try { m.DropDownItems.AddRange(menu.Value.DropDownItems); } catch(NotImplementedException) { /*Allow for no child menus*/} catch (ArgumentNullException) { /*Allow for no child menus*/}
                 m.Click += menu.Value.OnClick;
@@ -164,7 +190,7 @@ namespace SingleCopy.Plugin
                 if (TryGetAssembly(path, args.Name, out assembly)) return assembly;
             }
 
-            PluginLogger.Error("{0} could not be found in any of the following locations:\r\n\t{1}\r\n\t{2}\r\n\t{3}\r\n\t{4}\r\n\t{5}\r\n", args.Name, DirectoryList);
+            PluginLogger.Error("{0} could not be found in any of the following locations:\r\n\t{1}\r\n\t{2}\r\n\t{3}\r\n\t{4}\r\n\t{5}\r\n", (new string[] { args.Name }).Concat(DirectoryList).ToArray());
             return null;
         }
 
