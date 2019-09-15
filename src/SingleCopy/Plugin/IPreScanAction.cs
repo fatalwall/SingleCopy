@@ -17,5 +17,6 @@ namespace SingleCopy.Plugin
     public interface IPreScanActionMetadata
     {
         string Name { get; }
+        int Weight { get; }
     }
 }

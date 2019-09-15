@@ -53,7 +53,7 @@ namespace SingleCopy.Plugin
             return image;
         }
 
-
+        public static DirectoryInfo SearchDirectory { get; set; }
         public static frmMaster Form => Application.OpenForms.OfType<frmMaster>().Single();
 
         public static OutlookGrid DataGrid => Form.Controls.OfType<SplitContainer>().Single().Panel1.Controls.OfType<OutlookGrid>().Single();
@@ -66,7 +66,7 @@ namespace SingleCopy.Plugin
         #region "Fetch Metadata"
         public static dynamic GetMedadata()
         {
-            return GetMedadata((new StackTrace()).GetFrame(1).GetMethod().ReflectedType);
+            return GetMedadata((new StackTrace()).GetFrame(1).GetMethod().ReflectedType) ?? GetMedadata((new StackTrace()).GetFrame(2).GetMethod().ReflectedType);
         }
         public static dynamic GetMedadata(Type type)
         {
@@ -128,9 +128,17 @@ namespace SingleCopy.Plugin
 
         [ImportMany]
         private IEnumerable<Lazy<IPostScanAction, IPostScanActionMetadata>> PostScanActions;
+        public static void RunPostScanActions()
+        {
+            foreach (var plugin in GetManager().PostScanActions.OrderBy(p => p.Metadata.Weight)) { plugin.Value.Action(); }
+        }
 
         [ImportMany]
         private IEnumerable<Lazy<IPreScanAction, IPreScanActionMetadata>> PreScanActions;
+        public static void RunPreScanActions()
+        {
+            foreach (var plugin in GetManager().PreScanActions.OrderBy(p => p.Metadata.Weight)) { plugin.Value.Action(); }
+        }
         #endregion
 
         public PluginManager()

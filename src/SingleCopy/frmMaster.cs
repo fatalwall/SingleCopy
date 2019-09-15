@@ -53,6 +53,8 @@ namespace SingleCopy
             startTime = DateTime.Now;
             toolStripStatus.Text = "Scanning Files";
             toolStripScan.Enabled = false;
+            Plugin.PluginManager.SearchDirectory = new DirectoryInfo(Path);
+            Plugin.PluginManager.RunPreScanActions();
             bgWorker.RunWorkerAsync(Path);
         }
 
@@ -134,6 +136,8 @@ namespace SingleCopy
             toolStripStatusBar.Visible = false;
             toolStripScan.Enabled = true;
             Program.files.Clear();
+
+            Plugin.PluginManager.RunPostScanActions();
         }
 
         private void grdFiles_RowEnter(object sender, DataGridViewCellEventArgs e)
