@@ -1,5 +1,5 @@
-# SingleCopy
-Tool to assist in finding and removing duplicate copies of a file
+## Overview
+Tool to assist in scanning a file system to identify potential duplicate files and provide the ability custom additonal actions or automation.
 
 [![GitHub release](https://img.shields.io/github/release/fatalwall/SingleCopy.svg?label=GitHub%20release)](https://github.com/fatalwall/SingleCopy/releases/latest)
 
