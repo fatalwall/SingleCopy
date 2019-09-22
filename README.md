@@ -11,4 +11,4 @@ Tool to assist in scanning a file system to identify potential duplicate files a
 - Additional file properties are available in Options
 - You can export the visible columns to an Excel formatted document
 
-![Add to Chrome](https://github.com/fatalwall/SingleCopy/blob/master/icons/Screenshot.PNG)
+![ScreenShot of application](./icons/Screenshot.PNG)
