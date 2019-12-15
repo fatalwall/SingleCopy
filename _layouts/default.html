@@ -34,18 +34,24 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
+	  {%if page.id %}
+	    <h1>{{ page.title }}</h1>
+	  {% endif %}
           {{ content }}
+	  {%if page.id %}
+	    Published: {{ page.date | date: "%B %d, %Y" }}
+	  {% endif %}
         </section>
         
         <aside id="sidebar">      
-			{% if site.github.is_user_page %}
-				{% capture my_include %}{% include_relative sidebar.md %}{% endcapture %}{{ my_include | markdownify }}
-			{% endif %} 
+	  {% if site.github.is_user_page %}
+	      {% capture my_include %}{% include sidebar.md %}{% endcapture %}{{ my_include | markdownify }}
+	  {% endif %}
         </aside>
         {% if site.github.is_project_page %}
           <script>
             var client = new XMLHttpRequest();
-            client.open('GET', 'https://vshed.us/sidebar.md');
+            client.open('GET', 'https://raw.githubusercontent.com/fatalwall/fatalwall.github.io/master/_includes/sidebar.md');
             client.onload = function() {
               var converter = new showdown.Converter();
               document.getElementById("sidebar").innerHTML = converter.makeHtml(client.responseText);
